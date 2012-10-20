@@ -10,6 +10,8 @@ class MoviesController < ApplicationController
     @order = params[:order]
     @movies = Movie.order(@order)
     @all_ratings = Movie.ratings
+    @rating_checked = Hash.new
+    @all_ratings.each { |rating| @rating_checked[rating] = true }
   end
 
   def new
