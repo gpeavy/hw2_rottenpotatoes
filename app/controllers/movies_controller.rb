@@ -11,7 +11,11 @@ class MoviesController < ApplicationController
     @movies = Movie.order(@order)
     @all_ratings = Movie.ratings
     @rating_checked = Hash.new
-    @all_ratings.each { |rating| @rating_checked[rating] = true }
+    if params[:ratings].nil?
+      @all_ratings.each { |rating| @rating_checked[rating] = true }
+    else
+      @rating_checked = params[:ratings]
+    end
   end
 
   def new
