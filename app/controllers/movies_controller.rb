@@ -7,15 +7,15 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @order = params[:order]
-    @movies = Movie.order(@order)
     @all_ratings = Movie.ratings
-    @rating_checked = Hash.new
-    if params[:ratings].nil?
-      @all_ratings.each { |rating| @rating_checked[rating] = true }
-    else
-      @rating_checked = params[:ratings]
+    @order = (session[:order] = params[:order] || session[:order])
+    if (@ratings= (session[:ratings] = params[:ratings] || session[:ratings])).nil?
+      @ratings = Hash.new
+      @all_ratings.each { |rating| @ratings[rating] = true }
+      session[:ratings] = @ratings
     end
+
+    @movies = Movie.where(:rating => @ratings.keys).order(@order)
   end
 
   def new
