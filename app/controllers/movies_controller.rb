@@ -14,7 +14,10 @@ class MoviesController < ApplicationController
       @all_ratings.each { |rating| @ratings[rating] = true }
       session[:ratings] = @ratings
     end
-
+    unless (params[:order] == @order && params[:ratings] == @ratings)
+      flash.keep
+      redirect_to movies_path(:order => @order, :ratings => @ratings)
+    end
     @movies = Movie.where(:rating => @ratings.keys).order(@order)
   end
 
